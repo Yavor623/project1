@@ -1,0 +1,52 @@
+﻿@model IEnumerable<AccountManagement.Models.Schedule>
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{
+    ViewData["Title"] = "Пътища";
+}
+<main>
+    <h2 style="justify-self:center">Пътища</h2>
+    @if (User.IsInRole("Admin"))
+    {
+        <a asp-action="Create" class="btn btn-primary plus">Create</a>
+    }
+    <table class="table">
+        <thead>
+        <th>Траектория</th>
+        <th>Време</th>
+        <th>Влак</th>
+        <th>Станция</th>
+        <th></th>
+        </thead>
+        <tbody>
+            @foreach (var schedule in Model)
+            {
+
+                <tr>
+                    <td>@schedule.FromWhere - @schedule.ToWhere</td>
+                    <td>@schedule.StartsAtStation - @schedule.ArrivesAtDestination</td>
+                    <td>@schedule.Train.Line</td>
+                    <td>@schedule.TrainStation.Location</td>
+                    <td>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a asp-action="Delete" asp-route-id="@schedule.Id" class="btn btn-danger">Delete</a>
+                            <a asp-action="Edit" asp-route-id="@schedule.Id" class="btn btn-primary">Edit</a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</main>
+
+<style>
+    .plus {
+        justify-self: center;
+    }
+
+    main {
+        margin: 0 5% 0 5%;
+    }
+</style>

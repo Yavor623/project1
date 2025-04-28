@@ -25,7 +25,7 @@ using (var scope = app.Services.CreateScope())
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
     var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
-    var roles = new[] { "Admin", "Manager", "Member" };
+    var roles = new[] { "Admin", "User" };
 
     foreach (var role in roles)
     {
@@ -34,10 +34,10 @@ using (var scope = app.Services.CreateScope())
             await roleManager.CreateAsync(new IdentityRole(role));
         }
     }
-    string adminEmail = "amin@Example.com";
+    string adminEmail = "admin@abv.bg";
     string adminPassword = "Admin@123";
-    string firstName = "Yavor";
-    string lastName = "Markov";
+    string firstName = "Vladimir";
+    string lastName = "Dimitrov";
 
     var adminUser = await userManager.FindByEmailAsync(adminEmail);
 

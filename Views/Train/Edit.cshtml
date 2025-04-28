@@ -1,0 +1,32 @@
+﻿@model AccountManagement.Models.Trains.CreateTrainViewModel
+
+@{
+    ViewData["Title"] = "Реадактиране на влак";
+}
+<main>
+    <form asp-action="Edit" method="post">
+        <div class="form-group">
+            <label asp-for="Line" class="">Линия</label>
+            <input asp-for="Line" class="form-control" />
+            <span asp-validation-for="Line" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="AmountOfPassagers" class="">Брой пътници</label>
+            <input asp-for="AmountOfPassagers" class="form-control" type="number" min="20" max="1000" />
+            <span asp-validation-for="AmountOfPassagers" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="TypeOfTrainId" class="">Вид влак</label>
+            <select asp-for="TypeOfTrainId" class="form-select" asp-items="ViewBag.TypeOfTrainId">
+                <option>Моля изберете вид влак</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Готово</button>
+    </form>
+</main>
+
+<style>
+    main {
+        margin: 3% 5% 0 5%;
+    }
+</style>

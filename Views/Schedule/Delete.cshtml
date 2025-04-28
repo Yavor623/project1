@@ -1,0 +1,30 @@
+﻿@model AccountManagement.Models.Schedules.DeleteScheduleViewModel
+@{
+	ViewData["Title"] = "Изтриване на път";
+	string chosenTrain ="";
+	foreach (var item in ViewBag.ChosenTrain)
+	{
+		chosenTrain = item.Line;
+	}
+	string chosenTrainStation = "";
+	foreach (var item in ViewBag.ChosenTrainStation)
+	{
+		chosenTrainStation = item.Location;
+	}
+}
+<form asp-action="Delete" typeof="post">
+
+	<h2>Сигурни ли сте, че искате да изтриете този път?</h2>
+	<h5>Траектория: @Model.FromWhere - @Model.ToWhere</h5>
+	<h5>Време: @Model.StartsAtStation - @Model.ArrivesAtDestination</h5>
+	<h5>Влак: @chosenTrain</h5>
+	<h5>Станция: @chosenTrainStation</h5>
+
+	<button type="submit" asp-route-id="@Model.Id" class="btn btn-success" type="post">Да</button>
+	<a asp-action="Index" class="btn btn-danger">Не</a>
+</form>
+<style>
+	form {
+		margin: 3% 10% 0 10%;
+	}
+</style>

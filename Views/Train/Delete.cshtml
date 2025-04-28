@@ -1,0 +1,24 @@
+﻿@model AccountManagement.Models.Trains.DeleteTrainViewModel
+@{
+	ViewData["Title"] = "Изтриване на влак";
+	string chosenType ="";
+	foreach (var item in ViewBag.ChosenTypeOfTrain)
+	{
+		chosenType = item.Name;
+	}
+}
+<form asp-action="Delete" typeof="post">
+
+	<h2>Сигурни ли сте, че искате да изтриете този влак?</h2>
+	<h5>Линия: @Model.Line</h5>
+	<h5>Брой пътници: @Model.AmountOfPassagers</h5>
+	<h5>Вид Влак: @chosenType</h5>
+
+	<button type="submit" asp-route-id="@Model.Id" class="btn btn-success" type="post">Да</button>
+	<a asp-action="Index" class="btn btn-danger">Не</a>
+</form>
+<style>
+	form {
+		margin: 3% 10% 0 10%;
+	}
+</style>

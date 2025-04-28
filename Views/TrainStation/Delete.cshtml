@@ -1,0 +1,15 @@
+﻿@model AccountManagement.Models.TrainStations.DeleteTrainStationViewModel
+
+<form asp-action="Delete" typeof="post">
+
+	<h2>Сигурни ли сте, че искате да изтриете тази станция?</h2>
+	<h5>Локация: @Model.Location</h5>
+
+	<button type="submit" asp-route-id="@Model.Id" class="btn btn-success" type="post">Да</button>
+	<a asp-action="Index" class="btn btn-danger">Не</a>
+</form>
+<style>
+	form {
+		margin: 3% 10% 0 10%;
+	}
+</style>

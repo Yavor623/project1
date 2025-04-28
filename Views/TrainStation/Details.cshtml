@@ -1,0 +1,29 @@
+﻿@model IEnumerable<AccountManagement.Models.Schedule>
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{
+    ViewData["Title"] = "Пътища";
+}
+<main>
+     <h2 style="justify-self:center">Детайли</h2>
+    <table class="table">
+        <thead>
+            <th>Траектория</th>
+            <th>Време</th>
+            <th>Влак</th>
+            <th>Станция</th>
+            <th></th>
+        </thead>
+        <tbody>
+            @foreach (var schedule in Model)
+            {
+                <tr>
+                    <td>@schedule.FromWhere - @schedule.ToWhere</td>
+                    <td>@schedule.StartsAtStation - @schedule.ArrivesAtDestination</td>
+                    <td>@schedule.Train.Line</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</main>

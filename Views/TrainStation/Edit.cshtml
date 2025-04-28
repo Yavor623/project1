@@ -1,0 +1,21 @@
+﻿@model AccountManagement.Models.TrainStations.EditTrainStationViewModel
+
+@{
+    ViewData["Title"] = "Създаване на станция";
+}
+<main>
+    <form asp-action="Edit" method="post">
+        <div class="form-group">
+            <label asp-for="Location" class="">Локация</label>
+            <input asp-for="Location" class="form-control" />
+            <span asp-validation-for="Location" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">Готово</button>
+    </form>
+</main>
+
+<style>
+    main {
+        margin: 3% 5% 0 5%;
+    }
+</style>

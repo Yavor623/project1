@@ -59,13 +59,14 @@ namespace AccountManagement.Controllers
                     UserName = model.Email, 
                     Email = model.Email ,
                     FirstName = model.FirstName ,
-                    LastName = model.LastName 
+                    LastName = model.LastName ,
+                    EmailConfirmed = true
                 };
                 var result = await _userManager.CreateAsync(user,model.Password);
 
                 if (result.Succeeded)
                 {
-                    await _userManager.AddToRoleAsync(user, "Member");
+                    await _userManager.AddToRoleAsync(user, "User");
                     await _signInManager.SignInAsync(user,isPersistent:false);
 
                     return RedirectToAction("Index", "Home");

@@ -1,0 +1,48 @@
+﻿@model AccountManagement.Models.Schedules.CreateScheduleViewModel
+
+@{
+    ViewData["Title"] = "Създаване на път";
+}
+<main>
+    <form asp-action="Create" method="post">
+        <div class="form-group">
+            <label asp-for="FromWhere" class="">От къде</label>
+            <input asp-for="FromWhere" class="form-control" />
+            <span asp-validation-for="FromWhere" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="ToWhere" class="">До къде</label>
+            <input asp-for="ToWhere" class="form-control"  />
+            <span asp-validation-for="ToWhere" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="StartsAtStation" class="">Тръгва в</label>
+            <input asp-for="StartsAtStation" class="form-control" type="datetime"  />
+            <span asp-validation-for="StartsAtStation" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="ArrivesAtDestination" class="">Пристига в</label>
+            <input asp-for="ArrivesAtDestination" class="form-control" type="datetime" />
+            <span asp-validation-for="ArrivesAtDestination" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="TrainId" class="">Влакове</label>
+            <select asp-for="TrainId" class="form-select" asp-items="ViewBag.TrainId">
+                <option>Моля изберете влак</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label asp-for="TrainStationId" class="">Станции</label>
+            <select asp-for="TrainStationId" class="form-select" asp-items="ViewBag.TrainStationId">
+                <option>Моля изберете станция</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Готово</button>
+    </form>
+</main>
+
+<style>
+    main {
+        margin: 3% 5% 0 5%;
+    }
+</style>
