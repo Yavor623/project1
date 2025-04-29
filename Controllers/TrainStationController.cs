@@ -3,6 +3,9 @@ using AccountManagement.Models;
 using AccountManagement.Models.Schedules;
 using AccountManagement.Models.TrainStations;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+using System.Globalization;
 
 namespace AccountManagement.Controllers
 {
@@ -88,7 +91,28 @@ namespace AccountManagement.Controllers
         public IActionResult Details(int id)
         {
             var theTrainStation = _db.TrainStations.FirstOrDefault(a => a.Id == id);
-            return View(theTrainStation.Schedules.ToList());
+            if(theTrainStation.Schedules!= null) 
+            {
+                return View(theTrainStation);
+            }
+            var fakeSchedules = new List<Schedule>();
+            return View(fakeSchedules);
+        }
+        [HttpGet]
+        public IActionResult AddSchedule(int id)
+        {
+            ViewData["ScheduleId"] = new SelectList(_db.Schedules,"Id","FromWhere"+"-"+"ToWhere");
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddSchedule(int id,string selectedSchedule)
+        {
+            var theTrainStation = _db.TrainStations.FirstOrDefault(a => a.Id == id);
+            var theSchedule = _db.Schedules.FirstOrDefault(a => a.FromWhere+"-"+a.ToWhere == selectedSchedule);
+            theTrainStation.Schedules.Append(theSchedule);
+            _db.TrainStations.Update(theTrainStation);
+            await _db.SaveChangesAsync();
+            return RedirectToAction("Details");
         }
     }
 }

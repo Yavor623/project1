@@ -16,19 +16,21 @@
         <thead>
         <th>Линия</th>
         <th>Брой пътници</th>
-        <th>Сегашна траектория</th>
         <th>Вид влак</th>
         <th></th>
         </thead>
         <tbody>
-           
-            @foreach(var train in Model)
+
+            @foreach (var train in Model)
             {
                 <tr>
                     <td>@train.Line</td>
                     <td>@train.AmountOfPassagers</td>
-                    <td>@train.Schedule.FromWhere - @train.Schedule.ToWhere</td>
                     <td>@train.TypeOfTrain.Name</td>
+                    @if (@train.Schedule != null)
+                    {
+                        <td>@train.Schedule.FromWhere-@train.Schedule.ToWhere</td>
+                    }
                     <td>
                         @if (User.IsInRole("Admin"))
                         {
@@ -52,3 +54,4 @@
         margin: 0 5% 0 5%;
     }
 </style>
+

@@ -7,29 +7,29 @@
 <main>
 <form asp-action="Register" method="post" id="everything">
     <h2>Регистрация</h2>
-    <div>
+    <div class="form-group">
         <label asp-for="FirstName">Име</label>
         <input asp-for="FirstName" />
         <span asp-validation-for="FirstName"></span>
     </div>
-    <div>
+    <div class="form-group">
         <label asp-for="LastName">Фамилия</label>
-        <input asp-for="LastName" />
+            <input asp-for="LastName" class="form-control" />
         <span asp-validation-for="LastName"></span>
     </div>
-    <div>
+        <div class="form-group">
         <label asp-for="Email">Имейл</label>
-        <input asp-for="Email" />
+            <input asp-for="Email" class="form-control" />
         <span asp-validation-for="Email"></span>
     </div>
-    <div>
+        <div class="form-group">
         <label asp-for="Password">Парола</label>
-        <input asp-for="Password" />
+            <input asp-for="Password" class="form-control" />
         <span asp-validation-for="Password"></span>
     </div>
-    <div>
+    <div class="form-group">
         <label asp-for="ConfirmPassword">Потвърди парола</label>
-        <input asp-for="ConfirmPassword" />
+            <input asp-for="ConfirmPassword" class="form-control" />
         <span asp-validation-for="ConfirmPassword"></span>
     </div>
     <br />

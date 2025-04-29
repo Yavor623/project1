@@ -6,6 +6,7 @@
     ViewData["Title"] = "Пътища";
 }
 <main>
+    
      <h2 style="justify-self:center">Детайли</h2>
     <table class="table">
         <thead>
@@ -22,6 +23,7 @@
                     <td>@schedule.FromWhere - @schedule.ToWhere</td>
                     <td>@schedule.StartsAtStation - @schedule.ArrivesAtDestination</td>
                     <td>@schedule.Train.Line</td>
+                    <td><a asp-action="AddSchedule" class="btn btn-primary plus" asp-route-id=""></a></td>
                 </tr>
             }
         </tbody>
