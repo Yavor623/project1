@@ -1,0 +1,30 @@
+﻿@model IEnumerable<AccountManagement.Models.Assesment>
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<main>
+    <div style="display:grid;grid-template-columns:1fr;">
+    @foreach(var rate in Model)
+    {
+        <div style="border:solid black 3px">
+            <p style="color:darkgray">Добавено на: @rate.TimeItWasAdded</p>
+            <h4>Оценка: </h4>
+            <p>@rate.RatingScore/5.0</p>
+            <br />
+            <h4>Коментар: </h4>
+            <p>@rate.Comment</p>
+        </div>
+    }
+    </div>
+</main>
+
+<style>
+    .plus {
+        justify-self: center;
+    }
+
+    main {
+        margin: 0 5% 0 5%;
+    }
+</style>

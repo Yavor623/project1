@@ -3,17 +3,16 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AccountManagement.Models.Trains
 {
-    public class CreateTrainViewModel
+    public class CreateRatingViewModel
     {
         [Required]
         public int Id { get; set; }
         [Required]
-        public string SerialNumber { get; set; }
+        [DisplayFormat(DataFormatString = "{0:N1}")]
+        public decimal RatingScore { get; set; }
         [Required]
-        public int Line { get; set; }
+        public string Comment { get; set; }
         [Required]
-        public int AmountOfPassagers { get; set; }
-        [Required]
-        public int TypeOfTrainId { get; set; }
+        public int TrainId { get; set; }
     }
 }

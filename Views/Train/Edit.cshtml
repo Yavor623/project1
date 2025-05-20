@@ -7,8 +7,13 @@
     <form asp-action="Edit" method="post">
         <div class="form-group">
             <label asp-for="Line" class="">Линия</label>
-            <input asp-for="Line" class="form-control" />
+            <input asp-for="Line" class="form-control" min="1" />
             <span asp-validation-for="Line" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="SerialNumber" class="">Сериен номер</label>
+            <input asp-for="SerialNumber" class="form-control" />
+            <span asp-validation-for="SerialNumber" class="text-danger"></span>
         </div>
         <div class="form-group">
             <label asp-for="AmountOfPassagers" class="">Брой пътници</label>

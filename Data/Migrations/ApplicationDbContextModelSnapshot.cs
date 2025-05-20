@@ -95,6 +95,40 @@ namespace AccountManagement.Data.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("AccountManagement.Models.Assesment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Comment")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("RatingScore")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("TimeItWasAdded")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("TrainId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TrainId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Ratings");
+                });
+
             modelBuilder.Entity("AccountManagement.Models.Schedule", b =>
                 {
                     b.Property<int>("Id")
@@ -120,15 +154,9 @@ namespace AccountManagement.Data.Migrations
                     b.Property<int>("TrainId")
                         .HasColumnType("int");
 
-                    b.Property<int>("TrainStationId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("TrainId")
-                        .IsUnique();
-
-                    b.HasIndex("TrainStationId");
+                    b.HasIndex("TrainId");
 
                     b.ToTable("Schedules");
                 });
@@ -144,11 +172,21 @@ namespace AccountManagement.Data.Migrations
                     b.Property<int>("AmountOfPassagers")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsItBusy")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsItCurrentlyUsed")
+                        .HasColumnType("bit");
+
                     b.Property<int>("Line")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ScheduleId")
-                        .HasColumnType("int");
+                    b.Property<string>("RatingScore")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SerialNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("TypeOfTrainId")
                         .HasColumnType("int");
@@ -158,23 +196,6 @@ namespace AccountManagement.Data.Migrations
                     b.HasIndex("TypeOfTrainId");
 
                     b.ToTable("Trains");
-                });
-
-            modelBuilder.Entity("AccountManagement.Models.TrainStation", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Location")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TrainStations");
                 });
 
             modelBuilder.Entity("AccountManagement.Models.TypeOfTrain", b =>
@@ -349,23 +370,34 @@ namespace AccountManagement.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("AccountManagement.Models.Schedule", b =>
+            modelBuilder.Entity("AccountManagement.Models.Assesment", b =>
                 {
                     b.HasOne("AccountManagement.Models.Train", "Train")
-                        .WithOne("Schedule")
-                        .HasForeignKey("AccountManagement.Models.Schedule", "TrainId")
+                        .WithMany("Ratings")
+                        .HasForeignKey("TrainId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AccountManagement.Models.TrainStation", "TrainStation")
-                        .WithMany("Schedules")
-                        .HasForeignKey("TrainStationId")
+                    b.HasOne("AccountManagement.Models.ApplicationUser", "User")
+                        .WithMany("Ratings")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Train");
 
-                    b.Navigation("TrainStation");
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("AccountManagement.Models.Schedule", b =>
+                {
+                    b.HasOne("AccountManagement.Models.Train", "Train")
+                        .WithMany("Schedules")
+                        .HasForeignKey("TrainId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Train");
                 });
 
             modelBuilder.Entity("AccountManagement.Models.Train", b =>
@@ -430,14 +462,15 @@ namespace AccountManagement.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("AccountManagement.Models.Train", b =>
+            modelBuilder.Entity("AccountManagement.Models.ApplicationUser", b =>
                 {
-                    b.Navigation("Schedule")
-                        .IsRequired();
+                    b.Navigation("Ratings");
                 });
 
-            modelBuilder.Entity("AccountManagement.Models.TrainStation", b =>
+            modelBuilder.Entity("AccountManagement.Models.Train", b =>
                 {
+                    b.Navigation("Ratings");
+
                     b.Navigation("Schedules");
                 });
 

@@ -18,7 +18,5 @@ namespace AccountManagement.Models.Schedules
         public DateTime ArrivesAtDestination { get; set; }
         [Required]
         public int TrainId { get; set; }
-        [Required]
-        public int TrainStationId { get; set; }
     }
 }

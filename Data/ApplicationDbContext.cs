@@ -11,21 +11,24 @@ namespace AccountManagement.Data
         {
         }
         public DbSet<Train> Trains { get; set; }
-        public DbSet<TrainStation> TrainStations { get; set; }
         public DbSet<Schedule> Schedules { get; set; }
         public DbSet<TypeOfTrain> TypeOfTrains { get; set; }
+        public DbSet<Assesment> Ratings { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
             builder.Entity<Schedule>()
-                .HasOne(o => o.TrainStation)
-                .WithMany(o => o.Schedules)
-                .HasForeignKey(o => o.TrainStationId);
-            builder.Entity<Schedule>()
                 .HasOne(o => o.Train)
-                .WithOne(o => o.Schedule)
-                .HasForeignKey<Schedule>(o=> o.TrainId)
-                .HasPrincipalKey<Train>(o=> o.Id);
+                .WithMany(o => o.Schedules)
+                .HasForeignKey(o => o.TrainId);
+            builder.Entity<Assesment>()
+                .HasOne(o => o.User)
+                .WithMany(o => o.Ratings)
+                .HasForeignKey(o => o.UserId);
+            builder.Entity<Assesment>()
+                .HasOne(o => o.Train)
+                .WithMany(o => o.Ratings)
+                .HasForeignKey(o => o.TrainId);
             builder.Entity<Train>()
                 .HasOne(o => o.TypeOfTrain)
                 .WithMany(o => o.Trains)

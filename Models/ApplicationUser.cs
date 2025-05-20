@@ -7,5 +7,6 @@ namespace AccountManagement.Models
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public IEnumerable<Assesment> Ratings { get; set; }
     }
 }

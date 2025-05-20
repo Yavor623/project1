@@ -14,23 +14,34 @@
     }
     <table class="table">
         <thead>
+        <th>Сериен номер</th>
         <th>Линия</th>
         <th>Брой пътници</th>
-        <th>Вид влак</th>
+        <th>Пътува ли?</th>
+        <th>Вид влак</th>    
+        <th>Оценка</th>
         <th></th>
         </thead>
         <tbody>
 
             @foreach (var train in Model)
             {
+                
                 <tr>
+                    <td>@train.SerialNumber</td>
                     <td>@train.Line</td>
                     <td>@train.AmountOfPassagers</td>
-                    <td>@train.TypeOfTrain.Name</td>
-                    @if (@train.Schedule != null)
+                    @if (train.IsItBusy)
                     {
-                        <td>@train.Schedule.FromWhere-@train.Schedule.ToWhere</td>
+                        <td><button class="btn btn-danger" disabled>Пътува</button></td>
                     }
+                    else
+                    {
+                        <td><button class="btn btn-success" disabled>Не пътува</button></td>
+                    }
+                    <td>@train.TypeOfTrain.Name</td>
+                    
+                    <td>@train.RatingScore/5.0 <a asp-action="Rate" asp-route-id="@train.Id" class="btn btn-info">Rate</a></td>
                     <td>
                         @if (User.IsInRole("Admin"))
                         {
@@ -39,7 +50,6 @@
                         }
                     </td>
                 </tr>
-
             }
         </tbody>
     </table>

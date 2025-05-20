@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AccountManagement.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class Final : Migration
+    public partial class Test : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -26,19 +26,6 @@ namespace AccountManagement.Data.Migrations
                 type: "nvarchar(max)",
                 nullable: false,
                 defaultValue: "");
-
-            migrationBuilder.CreateTable(
-                name: "TrainStations",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Location = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TrainStations", x => x.Id);
-                });
 
             migrationBuilder.CreateTable(
                 name: "TypeOfTrains",
@@ -59,10 +46,13 @@ namespace AccountManagement.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    SerialNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Line = table.Column<int>(type: "int", nullable: false),
                     AmountOfPassagers = table.Column<int>(type: "int", nullable: false),
-                    ScheduleId = table.Column<int>(type: "int", nullable: true),
-                    TypeOfTrainId = table.Column<int>(type: "int", nullable: false)
+                    IsItBusy = table.Column<bool>(type: "bit", nullable: false),
+                    IsItCurrentlyUsed = table.Column<bool>(type: "bit", nullable: false),
+                    TypeOfTrainId = table.Column<int>(type: "int", nullable: false),
+                    RatingScore = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -71,6 +61,35 @@ namespace AccountManagement.Data.Migrations
                         name: "FK_Trains_TypeOfTrains_TypeOfTrainId",
                         column: x => x.TypeOfTrainId,
                         principalTable: "TypeOfTrains",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Ratings",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RatingScore = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Comment = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TimeItWasAdded = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TrainId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Ratings", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Ratings_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Ratings_Trains_TrainId",
+                        column: x => x.TrainId,
+                        principalTable: "Trains",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -85,18 +104,11 @@ namespace AccountManagement.Data.Migrations
                     ToWhere = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     StartsAtStation = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ArrivesAtDestination = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TrainId = table.Column<int>(type: "int", nullable: false),
-                    TrainStationId = table.Column<int>(type: "int", nullable: false)
+                    TrainId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Schedules", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Schedules_TrainStations_TrainStationId",
-                        column: x => x.TrainStationId,
-                        principalTable: "TrainStations",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Schedules_Trains_TrainId",
                         column: x => x.TrainId,
@@ -117,15 +129,19 @@ namespace AccountManagement.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Schedules_TrainId",
-                table: "Schedules",
-                column: "TrainId",
-                unique: true);
+                name: "IX_Ratings_TrainId",
+                table: "Ratings",
+                column: "TrainId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Schedules_TrainStationId",
+                name: "IX_Ratings_UserId",
+                table: "Ratings",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Schedules_TrainId",
                 table: "Schedules",
-                column: "TrainStationId");
+                column: "TrainId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Trains_TypeOfTrainId",
@@ -137,10 +153,10 @@ namespace AccountManagement.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Schedules");
+                name: "Ratings");
 
             migrationBuilder.DropTable(
-                name: "TrainStations");
+                name: "Schedules");
 
             migrationBuilder.DropTable(
                 name: "Trains");

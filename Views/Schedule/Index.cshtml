@@ -3,10 +3,33 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 @{
-    ViewData["Title"] = "Пътища";
+    ViewData["Title"] = "Маршрути";
+    string date = "";
+    foreach(var schedule in Model)
+    {
+        if(DateTime.Compare(schedule.StartsAtStation.Date,schedule.ArrivesAtDestination.Date) == 0)
+        {
+            date = $"{schedule.StartsAtStation.Date.Day}/{schedule.StartsAtStation.Date.Month}/{schedule.StartsAtStation.Date.Year}";
+        }
+        else
+        {
+            if(schedule.StartsAtStation.Date.Year!= schedule.ArrivesAtDestination.Date.Year)
+            {
+                date = $"{schedule.StartsAtStation.Date.Day}/{schedule.StartsAtStation.Date.Month}/{schedule.StartsAtStation.Date.Year} - {schedule.StartsAtStation.Date.Day}/{schedule.StartsAtStation.Date.Month}/{schedule.StartsAtStation.Date.Year} ";
+            }
+            else if (schedule.StartsAtStation.Date.Month != schedule.ArrivesAtDestination.Date.Month)
+            {
+                date = $"{schedule.StartsAtStation.Date.Day}/{schedule.StartsAtStation.Date.Month} - {schedule.ArrivesAtDestination.Date.Day}/{schedule.ArrivesAtDestination.Date.Month}/{schedule.StartsAtStation.Date.Year} ";
+            }
+            else
+            {
+                date = $"{schedule.StartsAtStation.Date.Day} - {schedule.ArrivesAtDestination.Date.Day}/{schedule.ArrivesAtDestination.Date.Month}/{schedule.StartsAtStation.Date.Year} ";
+            }
+        }
+    }
 }
 <main>
-    <h2 style="justify-self:center">Пътища</h2>
+    <h2 style="justify-self:center">Маршрути</h2>
     @if (User.IsInRole("Admin"))
     {
         <a asp-action="Create" class="btn btn-primary plus">Create</a>
@@ -14,29 +37,41 @@
     <table class="table">
         <thead>
         <th>Траектория</th>
-        <th>Време</th>
+        <th>Дата</th>
+        <th>Тръгва</th>
+        <th>Пристига</th>
+        <th>Зает ли е?</th>
         <th>Влак</th>
-        <th>Станция</th>
         <th></th>
         </thead>
         <tbody>
             @foreach (var schedule in Model)
             {
-
-                <tr>
-                    <td>@schedule.FromWhere - @schedule.ToWhere</td>
-                    <td>@schedule.StartsAtStation - @schedule.ArrivesAtDestination</td>
-                    <td>@schedule.Train.Line</td>
-                    <td>@schedule.TrainStation.Location</td>
+               
+                    <tr>
+                        <td>@schedule.FromWhere - @schedule.ToWhere</td>
+                        <td>@date</td>
+                        <td>@schedule.StartsAtStation.TimeOfDay</td>
+                        <td>@schedule.ArrivesAtDestination.TimeOfDay</td>
+                    @if (schedule.Train.IsItCurrentlyUsed)
+                    {
+                        <td><button class="btn btn-danger" disabled>Зает</button></td>
+                    }
+                    else
+                    {
+                        <td><button class="btn btn-success" disabled>Свободен</button></td>
+                    }
+                        <td>@schedule.Train.Line</td>
+                   
                     <td>
-                        @if (User.IsInRole("Admin"))
-                        {
-                            <a asp-action="Delete" asp-route-id="@schedule.Id" class="btn btn-danger">Delete</a>
-                            <a asp-action="Edit" asp-route-id="@schedule.Id" class="btn btn-primary">Edit</a>
-                        }
-                    </td>
-                </tr>
-            }
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <a asp-action="Delete" asp-route-id="@schedule.Id" class="btn btn-danger">Delete</a>
+                                <a asp-action="Edit" asp-route-id="@schedule.Id" class="btn btn-primary">Edit</a>
+                            }
+                        </td>
+                    </tr>
+                }
         </tbody>
     </table>
 </main>

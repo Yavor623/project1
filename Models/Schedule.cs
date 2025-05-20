@@ -13,11 +13,9 @@ namespace AccountManagement.Models
         public DateTime StartsAtStation { get; set; }
         [DataType(DataType.DateTime)]
         public DateTime ArrivesAtDestination { get; set; }
-        [ForeignKey("TrainId")]
         public int TrainId { get; set; }
+        [ForeignKey("TrainId")]
         public Train Train { get; set; }
-        [ForeignKey("TrainStationId")]
-        public int TrainStationId { get; set; }
-        public TrainStation TrainStation { get; set; }
+
     }
 }
