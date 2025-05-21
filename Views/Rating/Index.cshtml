@@ -5,15 +5,32 @@
 
 <main>
     <div style="display:grid;grid-template-columns:1fr;">
-    @foreach(var rate in Model)
-    {
-        <div style="border:solid black 3px">
-            <p style="color:darkgray">Добавено на: @rate.TimeItWasAdded</p>
-            <h4>Оценка: </h4>
-            <p>@rate.RatingScore/5.0</p>
-            <br />
-            <h4>Коментар: </h4>
-            <p>@rate.Comment</p>
+        @foreach(var rate in Model)
+        {
+            <div style="border:solid black 1.5px;border-radius:7px;height:95%;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:0.5fr 2fr 0.5fr;padding:3%">
+                <div style="grid-column:1/2;grid-row:1/1">
+                    @if (rate.IsItEdited)
+                    {
+                        <p style="color:darkgray">Редактирано на: @rate.TimeItWasAdded</p>
+                    }
+                    else
+                    {
+                        <p style="color:darkgray">Добавено на: @rate.TimeItWasAdded</p>
+                    }
+                    
+                    </div>
+                <div style="grid-column:1/1;grid-row:2/2">
+                    <h4>Оценка: </h4>
+                    <p>@rate.RatingScore/5.0</p>
+                </div>
+                <div style="grid-column:2/2;grid-row:2/3">
+                    <h4>Коментар: </h4>
+                    <p>@rate.Comment</p>
+                </div>
+                <div style="grid-column:1/1;grid-row:3/3">
+                    <a asp-action="Delete" asp-route-id="@rate.Id" class="btn btn-danger">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@rate.Id" class="btn btn-primary">Edit</a>
+                </div>
         </div>
     }
     </div>

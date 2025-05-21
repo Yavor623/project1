@@ -13,5 +13,11 @@ namespace AccountManagement.Models.Rating
         public string Comment { get; set; }
         [Required]
         public int TrainId { get; set; }
+        [Required]
+        public DateTime TimeItWasAdded { get; set; }
+        [Required]
+        public bool IsItEdited { get; set; } = false;
+        [Required]
+        public string UserId { get; set; }
     }
 }

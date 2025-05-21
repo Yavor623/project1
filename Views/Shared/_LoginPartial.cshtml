@@ -3,11 +3,11 @@
 @inject UserManager<ApplicationUser> UserManager
 
 <ul class="navbar-nav">
+@if (SignInManager.IsSignedIn(User))
+{
     <li class="nav-item">
         <a class="btn btn-primary" asp-controller="Rating" asp-action="Index">Оценки</a>
     </li>
-@if (SignInManager.IsSignedIn(User))
-{
     <a  class="btn btn-secondary" asp-controller="Account" asp-action="Logout">Logout</a>
 }
 else
