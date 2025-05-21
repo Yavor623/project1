@@ -5,7 +5,6 @@ namespace AccountManagement.Models
 {
     public class Schedule
     {
-        [Key]
         public int Id { get; set; }
         public string FromWhere { get; set; }
         public string ToWhere { get; set; }

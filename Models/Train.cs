@@ -6,7 +6,6 @@ namespace AccountManagement.Models
 {
     public class Train
     {
-        [Key]
         public int Id { get; set; }
         public string SerialNumber { get; set; }
         public int Line { get; set; }

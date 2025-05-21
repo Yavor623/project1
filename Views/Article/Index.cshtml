@@ -1,0 +1,46 @@
+﻿@model IEnumerable<AccountManagement.Models.Article>
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<main>
+    <div style="display:grid;grid-template-columns:1fr">
+        @if (User.IsInRole("Admin"))
+        {
+            <a asp-action="Create" class="btn btn-primary plus">Add</a>
+        }
+        <br />
+        @foreach (var article in Model)
+        {
+            <div style="border:solid black 1.5px;border-radius:7px;height:95%;display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:0.5fr 2fr 0.5fr;padding:3%">
+                <div style="grid-column:1/2;grid-row:1/1">
+                    <p style="color:darkgray">Добавено на: @article.TimeItWasAdded</p>
+                </div>
+                <div style="grid-column:1/1;grid-row:2/2">
+                    <h4>@article.Title</h4>
+                </div>
+                <div style="grid-column:2/3;grid-row:2/3">
+                    <p>@article.Content</p>
+                </div>
+                @if (User.IsInRole("Admin"))
+                {
+                    <div style="grid-column:1/1;grid-row:3/3">
+                        <a asp-action="Delete" asp-route-id="@article.Id" class="btn btn-danger">Delete</a>
+                        <a asp-action="Edit" asp-route-id="@article.Id" class="btn btn-primary">Edit</a>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</main>
+
+<style>
+    .plus {
+        justify-self: center;
+    }
+
+    main {
+        margin: 0 5% 0 5%;
+    }
+</style>
+

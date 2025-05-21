@@ -6,7 +6,7 @@
 @if (SignInManager.IsSignedIn(User))
 {
     <li class="nav-item">
-        <a class="btn btn-primary" asp-controller="Rating" asp-action="Index">Оценки</a>
+        <a class="btn btn-light" asp-controller="Rating" asp-action="Index">Оценки</a>
     </li>
     <a  class="btn btn-secondary" asp-controller="Account" asp-action="Logout">Logout</a>
 }

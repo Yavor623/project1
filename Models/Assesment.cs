@@ -11,7 +11,6 @@ namespace AccountManagement.Models
         public string Comment { get; set; }
         [DataType(DataType.DateTime)]
         public DateTime TimeItWasAdded { get; set; }
-        [NotMapped]
         public bool IsItEdited { get; set; } = false;
         [ForeignKey("TrainId")]
         public Train Train { get; set; }

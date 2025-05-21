@@ -7,7 +7,7 @@
     <div style="display:grid;grid-template-columns:1fr;">
         @foreach(var rate in Model)
         {
-            <div style="border:solid black 1.5px;border-radius:7px;height:95%;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:0.5fr 2fr 0.5fr;padding:3%">
+            <div style="border:solid black 1.5px;border-radius:7px;height:95%;display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:0.5fr 2fr 0.5fr;padding:3%">
                 <div style="grid-column:1/2;grid-row:1/1">
                     @if (rate.IsItEdited)
                     {
@@ -21,9 +21,9 @@
                     </div>
                 <div style="grid-column:1/1;grid-row:2/2">
                     <h4>Оценка: </h4>
-                    <p>@rate.RatingScore/5.0</p>
+                    <p>@rate.RatingScore/5,0</p>
                 </div>
-                <div style="grid-column:2/2;grid-row:2/3">
+                <div style="grid-column:2/3;grid-row:2/3">
                     <h4>Коментар: </h4>
                     <p>@rate.Comment</p>
                 </div>

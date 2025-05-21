@@ -14,8 +14,7 @@ namespace AccountManagement.Controllers
     {
         private readonly ApplicationDbContext _db;
         public ScheduleController(ApplicationDbContext db) => _db = db;
-        [Authorize]
-        public IActionResult Index()
+        public IActionResult Index(string fromWhere,string toWhere,DateTime fromWhatTime, DateTime untilWhatTime)
         {
             var schedules = _db.Schedules.Include(a => a.Train).ToList();
             foreach (var schedule in schedules)
@@ -28,6 +27,34 @@ namespace AccountManagement.Controllers
                 {
                     schedule.Train.IsItCurrentlyUsed = false;
                 }
+            }
+            if (!String.IsNullOrEmpty(fromWhere))
+            {
+                var filteredSchedules = 
+                    from schedule in schedules
+                    where schedule.FromWhere.ToLower().Contains(fromWhere)
+                    select schedule;
+                return View(filteredSchedules);
+            }
+            else if (!String.IsNullOrEmpty(toWhere))
+            {
+                var filteredSchedules =
+                    from schedule in schedules
+                    where schedule.ToWhere.ToLower().Contains(toWhere)
+                    select schedule; 
+                return View(filteredSchedules);
+            }
+            else if (!String.IsNullOrEmpty(toWhere)&& !String.IsNullOrEmpty(fromWhere))
+            {
+                var filteredSchedules = 
+                    from schedule in schedules
+                    where schedule.ToWhere.ToLower().Contains(toWhere)
+                    select schedule;
+                var secondTimeFilteredSchedules =
+                    from schedule in filteredSchedules
+                    where schedule.FromWhere.ToLower().Contains(fromWhere)
+                    select schedule;
+                return View(secondTimeFilteredSchedules);
             }
             return View(schedules);
         }

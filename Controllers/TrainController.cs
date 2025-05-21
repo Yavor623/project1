@@ -20,7 +20,6 @@ namespace AccountManagement.Controllers
             _db = db; 
             _userManager = userManager;
         }
-        [Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
             var trains = _db.Trains.Include(a => a.TypeOfTrain).Include(a => a.Schedules).ToList();

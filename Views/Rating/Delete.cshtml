@@ -1,0 +1,25 @@
+﻿@model AccountManagement.Models.Rating.DeleteRatingViewModel
+@{
+	ViewData["Title"] = "Изтриване на оценка";
+	string chosenTrain ="";
+	foreach (var item in ViewBag.ChosenTrain)
+	{
+		 chosenTrain = item.SerialNumber;
+	}
+}
+<form asp-action="Delete" typeof="post">
+
+	<h2>Сигурни ли сте, че искате да изтриете тази оценка?</h2>
+	<h5>Дата на създаване: @Model.TimeItWasAdded </h5>
+	<h5>Оценка: @Model.RatingScore </h5>
+	<h5>Коментар: @Model.Comment</h5>
+	<h5>На влак: @chosenTrain</h5>
+
+	<button type="submit" asp-route-id="@Model.Id" class="btn btn-success" type="post">Да</button>
+	<a asp-action="Index" class="btn btn-danger">Не</a>
+</form>
+<style>
+	form {
+		margin: 3% 10% 0 10%;
+	}
+</style>

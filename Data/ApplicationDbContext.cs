@@ -14,6 +14,7 @@ namespace AccountManagement.Data
         public DbSet<Schedule> Schedules { get; set; }
         public DbSet<TypeOfTrain> TypeOfTrains { get; set; }
         public DbSet<Assesment> Ratings { get; set; }
+        public DbSet<Article> Articles { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

@@ -30,6 +30,14 @@
 }
 <main>
     <h2 style="justify-self:center">Маршрути</h2>
+    <form asp-action="Index" method="get" style="justify-self:center;width:100%;justify-items:center">
+        <br />
+        <input placeholder="От къде" name="fromWhere" id="fromWhere" class="form-control" style="width:45%"/>
+        <br />
+        <input placeholder="До къде" name="toWhere" id="toWhere" class="form-control" style="width:45%" />
+        <br />
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
     @if (User.IsInRole("Admin"))
     {
         <a asp-action="Create" class="btn btn-primary plus">Create</a>
@@ -61,7 +69,7 @@
                     {
                         <td><button class="btn btn-success" disabled>Свободен</button></td>
                     }
-                        <td>@schedule.Train.Line</td>
+                        <td>@schedule.Train.SerialNumber</td>
                    
                     <td>
                             @if (User.IsInRole("Admin"))

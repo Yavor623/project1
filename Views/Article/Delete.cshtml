@@ -1,0 +1,18 @@
+﻿@model AccountManagement.Models.Articles.DeleteArticleViewModel
+@{
+	ViewData["Title"] = "Изтриване на новина";
+}
+<form asp-action="Delete" typeof="post">
+
+	<h2>Сигурни ли сте, че искате да изтриете този новина?</h2>
+	<h5>Заглавие: @Model.Title</h5>
+	<h5>Съдържание: @Model.Content</h5>
+
+	<button type="submit" asp-route-id="@Model.Id" class="btn btn-success" type="post">Да</button>
+	<a asp-action="Index" class="btn btn-danger">Не</a>
+</form>
+<style>
+	form {
+		margin: 3% 10% 0 10%;
+	}
+</style>

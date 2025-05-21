@@ -41,7 +41,7 @@
                     }
                     <td>@train.TypeOfTrain.Name</td>
                     
-                    <td>@train.RatingScore/5.0 <a asp-action="Rate" asp-route-id="@train.Id" class="btn btn-info">Rate</a></td>
+                    <td>@train.RatingScore/5,0 <a asp-action="Rate" asp-route-id="@train.Id" class="btn btn-info">Rate</a></td>
                     <td>
                         @if (User.IsInRole("Admin"))
                         {

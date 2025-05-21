@@ -7,7 +7,7 @@
     <form asp-action="Edit" method="post">
         <div class="form-group">
             <label asp-for="RatingScore" class="">Оценка</label>
-            <input asp-for="RatingScore" class="form-control" type="number" step="0.1" min="0.1" max="5.0" value="0.0" />
+            <input asp-for="RatingScore" class="form-control" type="number" step="0.1" min="0.1" max="5.0" />
             <span asp-validation-for="RatingScore" class="text-danger"></span>
         </div>
         <div class="form-group">
