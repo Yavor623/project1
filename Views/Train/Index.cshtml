@@ -10,7 +10,7 @@
     <h2 style="justify-self:center">Влакове</h2>
     @if (User.IsInRole("Admin"))
     {
-        <a asp-action="Create" class="btn btn-primary plus">Create</a>
+        <a asp-action="Create" class="btn btn-primary plus">Създай</a>
     }
     <table class="table">
         <thead>
@@ -41,12 +41,12 @@
                     }
                     <td>@train.TypeOfTrain.Name</td>
                     
-                    <td>@train.RatingScore/5,0 <a asp-action="Rate" asp-route-id="@train.Id" class="btn btn-info">Rate</a></td>
+                    <td>@train.RatingScore/5,0 <a asp-action="Rate" asp-route-id="@train.Id" class="btn btn-info">Оцени</a></td>
                     <td>
                         @if (User.IsInRole("Admin"))
                         {
-                            <a asp-action="Delete" asp-route-id="@train.Id" class="btn btn-danger">Delete</a>
-                            <a asp-action="Edit" asp-route-id="@train.Id" class="btn btn-primary">Edit</a>
+                            <a asp-action="Delete" asp-route-id="@train.Id" class="btn btn-danger">Изтрий</a>
+                            <a asp-action="Edit" asp-route-id="@train.Id" class="btn btn-primary">Редактирай</a>
                         }
                     </td>
                 </tr>

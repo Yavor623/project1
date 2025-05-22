@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 
 namespace AccountManagement.Controllers
@@ -14,7 +15,7 @@ namespace AccountManagement.Controllers
     {
         private readonly ApplicationDbContext _db;
         public ScheduleController(ApplicationDbContext db) => _db = db;
-        public IActionResult Index(string fromWhere,string toWhere,DateTime fromWhatTime, DateTime untilWhatTime)
+        public IActionResult Index(string fromWhere,string toWhere)
         {
             var schedules = _db.Schedules.Include(a => a.Train).ToList();
             foreach (var schedule in schedules)
@@ -28,19 +29,19 @@ namespace AccountManagement.Controllers
                     schedule.Train.IsItCurrentlyUsed = false;
                 }
             }
-            if (!String.IsNullOrEmpty(fromWhere))
+            if (!String.IsNullOrEmpty(fromWhere)&&String.IsNullOrEmpty(toWhere))
             {
                 var filteredSchedules = 
                     from schedule in schedules
-                    where schedule.FromWhere.ToLower().Contains(fromWhere)
+                    where schedule.FromWhere.ToLower().Contains(fromWhere.ToLower())
                     select schedule;
                 return View(filteredSchedules);
             }
-            else if (!String.IsNullOrEmpty(toWhere))
+            else if (!String.IsNullOrEmpty(toWhere) && String.IsNullOrEmpty(fromWhere))
             {
                 var filteredSchedules =
                     from schedule in schedules
-                    where schedule.ToWhere.ToLower().Contains(toWhere)
+                    where schedule.ToWhere.ToLower().Contains(toWhere.ToLower())
                     select schedule; 
                 return View(filteredSchedules);
             }
@@ -48,11 +49,11 @@ namespace AccountManagement.Controllers
             {
                 var filteredSchedules = 
                     from schedule in schedules
-                    where schedule.ToWhere.ToLower().Contains(toWhere)
+                    where schedule.ToWhere.ToLower().Contains(toWhere.ToLower())
                     select schedule;
                 var secondTimeFilteredSchedules =
                     from schedule in filteredSchedules
-                    where schedule.FromWhere.ToLower().Contains(fromWhere)
+                    where schedule.FromWhere.ToLower().Contains(fromWhere.ToLower())
                     select schedule;
                 return View(secondTimeFilteredSchedules);
             }
@@ -62,7 +63,7 @@ namespace AccountManagement.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            ViewData["TrainId"] = new SelectList(_db.Trains, "Id", "Line");
+            ViewData["TrainId"] = new SelectList(_db.Trains, "Id", "SerialNumber");
             return View();
         }
         [Authorize(Roles = "Admin")]
@@ -71,6 +72,23 @@ namespace AccountManagement.Controllers
         {
             if (ModelState.IsValid)
             {
+                foreach (var i in _db.Schedules)
+                {
+                    if(model.FromWhere== i.FromWhere && (DateTime.Compare(model.StartsAtStation,i.StartsAtStation)==0 ||(( DateTime.Compare(model.StartsAtStation, i.StartsAtStation) > 0)) || DateTime.Compare(i.ArrivesAtDestination, model.StartsAtStation) < 0)){
+                        ViewBag.Schedule = "Друг маршрут се изпълнява по същото време";
+                        return View(model);
+                    }
+                    if (DateTime.Compare(model.StartsAtStation, model.ArrivesAtDestination) > 0) 
+                    {
+                        ViewBag.Time = "Времето на тръгване не може да е след времето на пристигане";
+                        return View(model);
+                    } 
+                    else if (DateTime.Compare(model.ArrivesAtDestination, model.StartsAtStation) < 0)
+                    {
+                        ViewBag.Time = "Времето на пристигане не може да е преди времето на тръгване";
+                        return View(model);
+                    }
+                }
                 var schedule = new Schedule
                 {
                     Id = model.Id,
@@ -85,14 +103,14 @@ namespace AccountManagement.Controllers
                 _db.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
-            ViewBag.TrainId = new SelectList(_db.Trains, "Id", "Line",model.TrainId);
+            ViewBag.TrainId = new SelectList(_db.Trains, "Id", "SerialNumber", model.TrainId);
             return View(model);
         }
         [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            ViewData["TrainId"] = new SelectList(_db.Trains, "Id", "Line");
+            ViewData["TrainId"] = new SelectList(_db.Trains, "Id", "SerialNumber");
             var theSchedule = _db.Schedules.FirstOrDefault(a => a.Id == id);
             var schedule = new EditScheduleViewModel
             {
@@ -113,7 +131,24 @@ namespace AccountManagement.Controllers
             if (ModelState.IsValid)
             {
                 var schedule = _db.Schedules.FirstOrDefault(a => a.Id == id);
-
+                foreach (var i in _db.Schedules)
+                {
+                    if (model.FromWhere == i.FromWhere && (DateTime.Compare(model.StartsAtStation, i.StartsAtStation) == 0 || ((DateTime.Compare(model.StartsAtStation, i.StartsAtStation) > 0)) || DateTime.Compare(i.ArrivesAtDestination, model.StartsAtStation) < 0))
+                    {
+                        ViewBag.Schedule = "Друг маршрут се изпълнява по същото време";
+                        return View(model);
+                    }
+                    if (DateTime.Compare(model.StartsAtStation, model.ArrivesAtDestination) > 0)
+                    {
+                        ViewBag.Time = "Времето на тръгване не може да е след времето на пристигане";
+                        return View(model);
+                    }
+                    else if (DateTime.Compare(model.ArrivesAtDestination, model.StartsAtStation) < 0)
+                    {
+                        ViewBag.Time = "Времето на пристигане не може да е преди времето на тръгване";
+                        return View(model);
+                    }
+                }
                 schedule.Id = model.Id;
                 schedule.FromWhere = model.FromWhere;
                 schedule.ToWhere = model.ToWhere;
@@ -124,7 +159,7 @@ namespace AccountManagement.Controllers
                 await _db.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewBag.TrainId = new SelectList(_db.Trains, "Id", "Line", model.TrainId);
+            ViewBag.TrainId = new SelectList(_db.Trains, "Id", "SerialNumber", model.TrainId);
             return RedirectToAction(nameof(Index));
         }
         [Authorize(Roles = "Admin")]

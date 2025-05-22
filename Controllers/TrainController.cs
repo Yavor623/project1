@@ -59,6 +59,15 @@ namespace AccountManagement.Controllers
         {
             if (ModelState.IsValid)
             {
+                foreach (var item in _db.Trains)
+                {
+                    if(item.SerialNumber == model.SerialNumber)
+                    {
+                        ViewBag.SerialNumber = "Влак с този сериен номер вече съществува";
+                        ViewBag.CategoryId = new SelectList(_db.TypeOfTrains, "Id", "Name", model.TypeOfTrainId);
+                        return View(model);
+                    }
+                }
                 var train = new Train
                 {
                     Id = model.Id,
@@ -98,6 +107,16 @@ namespace AccountManagement.Controllers
             if (ModelState.IsValid)
             {
                 var train = _db.Trains.FirstOrDefault(a => a.Id == id);
+
+                foreach (var item in _db.Trains)
+                {
+                    if (item.SerialNumber == model.SerialNumber)
+                    {
+                        ViewBag.SerialNumber = "Влак с този сериен номер вече съществува";
+                        ViewBag.CategoryId = new SelectList(_db.TypeOfTrains, "Id", "Name", model.TypeOfTrainId);
+                        return View(model);
+                    }
+                }
 
                 train.Id = model.Id;
                 train.Line = model.Line;

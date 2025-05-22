@@ -39,7 +39,8 @@ namespace AccountManagement.Data
                 new TypeOfTrain { Id = 1, Name = "Скоростен" },
                 new TypeOfTrain { Id = 2, Name = "Пътнически" },
                 new TypeOfTrain { Id = 3, Name = "Градски" },
-                new TypeOfTrain { Id = 4, Name = "Извънградски" }
+                new TypeOfTrain { Id = 4, Name = "Извънградски" },
+                new TypeOfTrain { Id = 5, Name = "Транспортен" }
                 );
         }
     }

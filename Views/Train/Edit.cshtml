@@ -4,6 +4,8 @@
     ViewData["Title"] = "Редактиране на влак";
 }
 <main>
+    <h3>@ViewBag.Time</h3>
+    <h3>@ViewBag.SerialNumber</h3>
     <form asp-action="Edit" method="post">
         <div class="form-group">
             <label asp-for="Line" class="">Линия</label>
